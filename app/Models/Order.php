@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $casts = [
         'total_harga' => 'decimal:2',
-        'order_date' => 'datetime',
+        'order_date'  => 'datetime',
     ];
 
     protected $fillable = [
@@ -26,19 +26,27 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tikets()
-    {
-        return $this->belongsToMany(Tiket::class, 'detail_orders')
-            ->withPivot('jumlah', 'subtotal_harga');
-    }
-
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
 
+    // relasi detail order (hasMany)
     public function detailOrders()
     {
-        return $this->hasMany(DetailOrder::class);
+        return $this->hasMany(DetailOrder::class, 'order_id');
+    }
+
+    // alias biar bisa kamu panggil $history->details
+    public function details()
+    {
+        return $this->hasMany(DetailOrder::class, 'order_id');
+    }
+
+    // kalau kamu butuh many-to-many tiket via pivot detail_orders
+    public function tikets()
+    {
+        return $this->belongsToMany(Tiket::class, 'detail_orders', 'order_id', 'tiket_id')
+            ->withPivot('jumlah', 'subtotal_harga');
     }
 }

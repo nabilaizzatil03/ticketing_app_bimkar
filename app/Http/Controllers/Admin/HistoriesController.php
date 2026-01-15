@@ -1,30 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\History;
-use Illuminate\Http\Request;
+use App\Models\Order;
 
 class HistoriesController extends Controller
 {
     public function index()
     {
-        $histories = History::with(['event'])
-            ->where('user_id', auth()->id())
+        $histories = Order::with(['user','event'])
             ->latest()
             ->get();
 
-        return view('histories.index', compact('histories'));
+        return view('admin.history.index', compact('histories'));
     }
 
-    public function show(History $history)
+    public function show($id)
     {
-        // biar user tidak bisa buka history orang lain
-        abort_if($history->user_id !== auth()->id(), 403);
+        $history = Order::with(['user','event','details.tiket'])
+            ->findOrFail($id);
 
-        $history->load(['event', 'details.tiket']);
-
-        return view('histories.show', compact('history'));
+        return view('admin.history.show', compact('history'));
     }
 }

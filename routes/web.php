@@ -11,11 +11,9 @@ use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\User\EventController as UserEventController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\CheckoutController;
-use App\Http\Controllers\User\HistoryController;
 
-Route::middleware('auth')->group(function () {
-    Route::get('/histories', [HistoryController::class, 'index'])->name('histories.index');
-});
+
+
 
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 

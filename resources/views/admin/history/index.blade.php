@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.admin>
   <section class="max-w-7xl mx-auto py-12 px-6">
     <h1 class="text-xl font-semibold mb-8 text-center">Riwayat Pembelian</h1>
 
@@ -7,6 +7,7 @@
         <div class="card bg-base-100 shadow">
           <div class="card-body">
             <div class="grid grid-cols-12 gap-4 items-center">
+
               {{-- Image --}}
               <div class="col-span-12 md:col-span-3">
                 <div class="flex items-center gap-4">
@@ -18,7 +19,7 @@
                   <div class="md:hidden">
                     <div class="font-semibold">Order #{{ $history->id }}</div>
                     <div class="text-sm text-gray-500">
-                      {{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('d F Y, H:i') }}
+                      {{ \Carbon\Carbon::parse($history->order_date ?? $history->created_at)->translatedFormat('d F Y, H:i') }}
                     </div>
                   </div>
                 </div>
@@ -28,7 +29,7 @@
               <div class="col-span-12 md:col-span-6">
                 <div class="hidden md:block font-semibold">Order #{{ $history->id }}</div>
                 <div class="hidden md:block text-sm text-gray-500">
-                  {{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('d F Y, H:i') }}
+                  {{ \Carbon\Carbon::parse($history->order_date ?? $history->created_at)->translatedFormat('d F Y, H:i') }}
                 </div>
 
                 <div class="mt-2 text-sm">
@@ -40,15 +41,16 @@
               <div class="col-span-12 md:col-span-3 flex md:justify-end items-center gap-4">
                 <div class="text-right flex-1 md:flex-none">
                   <div class="font-semibold">
-                    Rp {{ number_format($history->total ?? 0, 0, ',', '.') }}
+                    Rp {{ number_format($history->total_harga ?? 0, 0, ',', '.') }}
                   </div>
                 </div>
 
-                <a href="{{ route('histories.show', $history) }}"
+                <a href="{{ route('admin.histories.show', $history->id) }}"
                    class="btn btn-primary !bg-blue-900 text-white">
                   Lihat Detail
                 </a>
               </div>
+
             </div>
           </div>
         </div>
@@ -57,4 +59,4 @@
       @endforelse
     </div>
   </section>
-</x-layouts.app>
+</x-layouts.admin>

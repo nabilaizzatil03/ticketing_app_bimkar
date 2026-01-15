@@ -2,27 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DetailOrder extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'order_id',
-        'tiket_id',
-        'jumlah',
-        'subtotal_harga',
-    ];
-
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
     public function tiket()
     {
-        return $this->belongsTo(Tiket::class);
+        return $this->belongsTo(Tiket::class, 'tiket_id');
     }
 }
